@@ -48,6 +48,9 @@ interface
   ! coupler surface fluxes/state structures
   subroutine scream_setup_surface_coupling (import_field_names, import_cpl_indices, &
                                             x2a_ptr, import_vector_components, &
+#ifdef EXTRA_ARG
+                                            extra_arg, &
+#endif 
                                             import_constant_multiple, do_import_during_init, &
                                             num_cpl_imports, num_scream_imports, import_field_size, &
                                             export_field_names, export_cpl_indices, &
@@ -67,6 +70,9 @@ interface
     integer(kind=c_int), intent(in) :: num_cpl_imports, num_scream_imports, &
                                        num_cpl_exports, num_scream_exports
     integer(kind=c_int), intent(in) :: import_field_size, export_field_size
+#ifdef EXTRA_ARG
+    type(c_ptr),         intent(in) :: extra_arg
+#endif 
   end subroutine scream_setup_surface_coupling
 
   ! This subroutine performs completes the initialization of the atm instance.

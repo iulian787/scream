@@ -87,6 +87,9 @@ CONTAINS
     type(c_ptr) :: x2a_ptr, a2x_ptr
     character(len=256)               :: atm_log_fname  ! name of ATM log file
     character(CL)                    :: calendar       ! calendar string
+ #ifdef EXTRA_ARG
+    real(r8), allocatable, target    :: extraArg 
+ #endif
 
     ! TODO: read this from the namelist?
     character(len=256)                :: yaml_fname = "./data/scream_input.yaml"
@@ -181,9 +184,15 @@ CONTAINS
 
     ! Init surface coupling stuff in the AD
     call scream_set_cpl_indices (x2a, a2x)
+ #ifdef EXTRA_ARG
+    allocate(extraArg(10))
+ #endif
 
     call scream_setup_surface_coupling (c_loc(import_field_names), c_loc(import_cpl_indices), &
                                         c_loc(x2a%rAttr), c_loc(import_vector_components), &
+ #ifdef EXTRA_ARG
+                                        c_loc(extraArg), &
+ #endif
                                         c_loc(import_constant_multiple), c_loc(do_import_during_init), &
                                         num_cpl_imports, num_scream_imports, import_field_size, &
                                         c_loc(export_field_names), c_loc(export_cpl_indices), &

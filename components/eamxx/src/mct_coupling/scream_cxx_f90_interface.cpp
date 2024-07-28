@@ -162,6 +162,9 @@ void scream_create_atm_instance (const MPI_Fint f_comm, const int atm_id,
 
 void scream_setup_surface_coupling (const char*& import_field_names, int*& import_cpl_indices,
                                     double*& x2a_ptr, int*& import_vector_components,
+#ifdef EXTRA_ARG
+                                    double*& extraArg, 
+#endif
                                     double*& import_constant_multiple, bool*& do_import_during_init,
                                     const int& num_cpl_imports, const int& num_scream_imports, const int& import_field_size,
                                     char*& export_field_names, int*& export_cpl_indices,
@@ -176,6 +179,10 @@ void scream_setup_surface_coupling (const char*& import_field_names, int*& impor
     // strings into 2d char arrays. Each string is null-terminated (atm_mct_mod
     // makes sure of that).
     using name_t = char[32];
+
+#ifdef EXTRA_ARG
+    extraArg[0] = 1.0 
+#endif
     name_t* names_in  = new name_t[num_scream_imports];
     name_t* names_out = new name_t[num_scream_exports];
     std::memcpy(names_in,  import_field_names, num_scream_imports*32*sizeof(char));
